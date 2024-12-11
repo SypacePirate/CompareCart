@@ -55,14 +55,14 @@ def item_details():
         query = (
             items_ref
             .where("title", "==", keyword)
-            .select(('title','store','price','star','img_reference','commentNum','detail_url'))
+            .select(('title','store','price','star','img_ref','comment_num','detail_url'))
         )
         # Apply order by
         docs = query.stream()
         results = [{'id': doc.id, **doc.to_dict()} for doc in docs]
         return jsonify(results), 200
-    except:
-        return jsonify({'error': 'No result found'})
+    except Exception as e:
+        return jsonify({'error': str(e)})
 
 @app.route('/api/products/compare', methods=['POST'])
 def item_comparison():
@@ -75,14 +75,14 @@ def item_comparison():
             query = (
             items_ref
             .where("title", "==", keyword)
-            .select(('title','store','price','star','img_reference','commentNum',))
+            .select(('title','category','store','price','star','img_ref','comment_num',))
             )
             doc=query.stream().to_dict()
             results.append(doc)
 
         return jsonify(results), 200
-    except:
-        return jsonify({'error': 'No result found'})
+    except Exception as e:
+        return jsonify({'error': str(e)})
 
 
 # Main function to test the API
